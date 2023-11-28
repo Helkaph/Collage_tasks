@@ -1,0 +1,7 @@
+﻿  Matrix_A.cpp
+C:\Users\IPS-21.22\Documents\IPS-21.22\Boev\Все задания\Контрольная\Matrix_A.cpp(6,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Matrix_B.cpp
+C:\Users\IPS-21.22\Documents\IPS-21.22\Boev\Все задания\Контрольная\Matrix_B.cpp(6,16): warning C4244: инициализация: преобразование "time_t" в "int", возможна потеря данных
+  main.cpp
+  Создание кода...
+  Контрольная.vcxproj -> C:\Users\IPS-21.22\Documents\IPS-21.22\Boev\Все задания\Контрольная\x64\Debug\Контрольная.exe
