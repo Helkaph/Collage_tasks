@@ -1,6 +1,7 @@
 import sqlite3
 import re
 from tkinter import Tk, ttk , Label, Entry, Button, Listbox, Scrollbar, Text, messagebox, Toplevel, END
+from datetime import datetime
 # Создание соединения с БД
 connect = sqlite3.connect('tasks.db')
 cursor = connect.cursor()
@@ -43,12 +44,20 @@ def Delete_Task(task_id):
 
 # Функция обновления списка задач
 def Refresh_Listbox(listbox):
+    Check_Deadlines()
     listbox.delete(0, END)
     tasks = Get_Tasks()
     for task in tasks:
         listbox.insert(END, task[1])
 
-
+# Функция проверки дедлайнов задач:
+def Check_Deadlines():
+    current_date = datetime.now().strftime('%d.%m.%Y')
+    tasks = Get_Tasks()
+    for task in tasks:
+        task_id, deadline, status = task[0], task[4], task[5]
+        if status != 'Выполнено' and datetime.strptime(deadline, '%d.%m.%Y') < datetime.strptime(current_date, '%d.%m.%Y'):
+            Task_Failed(task_id)
 # Функция создания окна для создания задачи
 def Create_Task_Window(listbox):
 
@@ -74,6 +83,7 @@ def Create_Task_Window(listbox):
         Create_Task(name, description, assignee, deadline)
         create_window.destroy()
         Refresh_Listbox(listbox)
+        Check_Deadlines()
 
     # Создание кнопок меню
     create_window = Toplevel()
@@ -189,6 +199,7 @@ def main():
             task_id = tasks[selected_task[0]][0]
             Task_Complete(task_id)
             Refresh_Listbox(listbox)
+            Check_Deadlines()
 
     def Fail_Task_Button():
         tasks = Get_Tasks()
@@ -197,6 +208,7 @@ def main():
             task_id = tasks[selected_task[0]][0]
             Task_Failed(task_id)
             Refresh_Listbox(listbox)
+            Check_Deadlines()
             
             
 
@@ -207,6 +219,7 @@ def main():
             task_id = tasks[selected_task[0]][0]
             Delete_Task(task_id)
             Refresh_Listbox(listbox)
+            Check_Deadlines()
 
 
 
@@ -219,6 +232,7 @@ def main():
     delete_button = ttk.Button(button_frame, text="Удалить задачу", command=Delete_Task_Button)
     delete_button.pack(pady=5)
 
+    Check_Deadlines()
     root.mainloop()
 
 main()
